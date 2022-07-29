@@ -25,23 +25,24 @@ function markerSize(mag){
 
 // Function that gets colors for circle markers
 function getColors(d) {
-    if (d < 1){
-      return "#B7DF5F"
+    // if (d < 1){
+    if (d >= 10){
+      return "#ffff00"
     }
-    else if ( d < 2){
-      return "#DCED11"
+    else if ( d >= 30){
+      return "#ffc000"
     }
-    else if (d < 3){
-      return "#EDD911"
+    else if (d >= 50){
+      return "##ff9400"
     }
-    else if (d < 4){
-      return "#EDB411"
+    else if (d >= 70){
+      return "##f6a6a6"
     }
-    else if (d < 5 ){
-      return "#ED7211"
+    else if (d >90){
+      return "#a84a4a"
     }
     else {
-      return "#ED4311"
+      return "#79eb00"
     }
   };
 
@@ -51,7 +52,8 @@ function createCircleMarker(feature, latlng){
     // Change the values of these options to change the symbol's appearance
       var markerOptions = {
         radius: markerSize(feature.properties.mag),
-        fillColor: getColors(feature.properties.mag),
+        // fillColor: getColors(feature.properties.mag),
+        fillColor: getColors(feature.geometry.coordinates[2]),
         color: "black",
         weight: 1,
         opacity: 1,
@@ -87,21 +89,21 @@ d3.json(link).then(function(data) {
   legend.onAdd = function(){
     // create div for the legend
     var div = L.DomUtil.create('div', 'info legend'),
-        labels = ['<strong>Magnitude</strong>'];
-        grades = [0, 1, 2, 3, 4, 5];
+        // labels = ['<strong>Magnitude</strong>'];
+        labels = [];
+        grades = [-10, 10, 30, 50, 70, 90];
         var colors = [
-            "#B7DF5F",
-            "#DCED11",
-            "#EDD911",
-            "#EDB411",
-            "#ED7211",
-            "#ED4311"
+            "#79eb00",
+            "#ffff00",
+            "#ffc000",
+            "#ff9400",
+            "#f6a6a6",
+            "#a84a4a"
           ];
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
             labels.push(
-                '<i style="background:' + colors[i] + '"></i> ' +
-                grades[i] + (grades[i + 1 ] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+                `<i style="background:${colors[i]}"></i> ${grades[i]}${grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'}`);
         }
         // return div;
         div.innerHTML = labels.join('<br')
