@@ -89,8 +89,8 @@ d3.json(link).then(function(data) {
   legend.onAdd = function(){
     // create div for the legend
     var div = L.DomUtil.create('div', 'info legend'),
-        // labels = ['<strong>Magnitude</strong>'];
-        labels = [];
+        labels = ['<strong>Depth of EarthQuake</strong>'];
+        // labels = [];
         grades = [-10, 10, 30, 50, 70, 90];
         var colors = [
             "#79eb00",
@@ -102,8 +102,9 @@ d3.json(link).then(function(data) {
           ];
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
-            labels.push(
-                `<i style="background:${colors[i]}"></i> ${grades[i]}${grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'}`);
+            // labels.push("<li style=\background-color: " + colors[i] + "'></li>"+ grades[i] +(grades[i + 1]) ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            labels.push("<li style= \'background: " + colors[i] + "'></li> " +
+            grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "</br>" : "+"));
         }
         // return div;
         div.innerHTML = labels.join('<br')
