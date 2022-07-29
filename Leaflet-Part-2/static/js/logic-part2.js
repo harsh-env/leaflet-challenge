@@ -18,6 +18,11 @@ accessToken: api_key
 
 var link = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
 
+d3.json(link).then(function(data) {
+  console.log(data)
+  createFeatures(data.features);
+})
+
 // Function that changes marker size depending on the magnitute values
 function markerSize(mag){
     return mag * 4
@@ -26,20 +31,20 @@ function markerSize(mag){
 // Function that gets colors for circle markers
 function getColors(d) {
     // if (d < 1){
-    if (d > 90){
-      return "#a84a4a"
+    if (d >= 10){
+      return "#ffff00"
     }
-    else if ( d >= 70){
-      return "#f6a6a6"
-    }
-    else if (d >= 50){
-      return "#ff9400"
-    }
-    else if (d >= 30){
+    else if ( d >= 30){
       return "#ffc000"
     }
-    else if (d >= 10){
-      return "#ffff00"
+    else if (d >= 50){
+      return "##ff9400"
+    }
+    else if (d >= 70){
+      return "##f6a6a6"
+    }
+    else if (d >90){
+      return "#a84a4a"
     }
     else {
       return "#79eb00"
@@ -63,25 +68,25 @@ function createCircleMarker(feature, latlng){
       return L.circleMarker(latlng, markerOptions);
     };
 
-
-d3.json(link).then(function(data) {
-    console.log(data)
+// Func that adds circles and popups to layer
+function createFeatures(earthquakeData) {
+    console.log(earthquakeData)
     // Creating a GeoJSON layer with the retrieved data
-    var earthquakes = data.features
-
-    // console.log(earthquakes)
-  
-  // loop through the data to create markers and popup
-    earthquakes.forEach(function(result){
-    //console.log(result.properties)
-    L.geoJSON(result,{
-      pointToLayer: createCircleMarker,
-      
-      // add popups to the circle markers to display data
-    }).bindPopup("Date: " + new Date(result.properties.time) + "<br>Place: " + result.properties.place + "<br>Magnitude: " + result.properties.mag
-    + "<br>Depth: " + result.geometry.coordinates[2]).addTo(map)
-      
+    function onEachFeature(feature, layer){
+      layer.bindPopup("Location: " + feature.properties.place + "<br>" 
+      + "Date: " + new Date(feature.properties.time) + "<br>" + "Magnitude: " + feature.properties.mag);
+    }
+    
+    var earthquakes = L.geoJSON(earthquakeData, {
+      onEachFeature: onEachFeature,
+      pointToLayer: createCircleMarker
     });
+  
+    // Send the earthquakes layer to the createMap function
+    // createMap(earthquakes);
+  }
+
+    
 
     //create legends and add to the map
   var legend = L.control({position: "bottomright" });
@@ -112,4 +117,4 @@ d3.json(link).then(function(data) {
     };
     legend.addTo(map)
     
-});
+
