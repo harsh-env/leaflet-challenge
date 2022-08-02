@@ -86,10 +86,10 @@ d3.json(link).then(function(data) {
     //create legends and add to the map
   var legend = L.control({position: "bottomright" });
 
-  legend.onAdd = function(){
+  legend.onAdd = function(map){
     // create div for the legend
     var div = L.DomUtil.create('div', 'info legend'),
-        labels = ['<strong>Depth of EarthQuake</strong>'];
+        labels = ['<strong>Depth of EarthQuake</strong> </br>'];
         // labels = [];
         grades = [-10, 10, 30, 50, 70, 90];
         var colors = [
@@ -109,7 +109,7 @@ d3.json(link).then(function(data) {
         // return div;
         div.innerHTML = labels.join('<br')
         return div;
-    };
-    legend.addTo(map)
+  };
+  legend.addTo(map)
     
 });
