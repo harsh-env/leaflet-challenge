@@ -5,10 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-```python
-# Adding config.py file.
-config.js
-```
+
 # Distribution / packaging
 .Python
 build/
